@@ -114,10 +114,10 @@ class BootupTime extends Audit {
    */
   static getExecutionTimingsByURL(trace) {
     const timelineModel = new DevtoolsTimelineModel(trace);
-    const bottomUpByName = timelineModel.bottomUpGroupBy('URL');
+    const bottomUpByURL = timelineModel.bottomUpGroupBy('URL');
     const result = new Map();
 
-    bottomUpByName.children.forEach((perUrlNode, url) => {
+    bottomUpByURL.children.forEach((perUrlNode, url) => {
       // when url is "" or about:blank, we skip it
       if (!url || url === 'about:blank') {
         return;
@@ -125,11 +125,12 @@ class BootupTime extends Audit {
 
       const taskGroups = {};
       perUrlNode.children.forEach((perTaskPerUrlNode) => {
+        // eventStyle() returns a string like 'Evaluate Script'
         const task = WebInspector.TimelineUIUtils.eventStyle(perTaskPerUrlNode.event);
-        // resolve which taskGroup we're using
+        // Resolve which taskGroup we're using
         const groupName = taskToGroup[task.title] || group.other;
-        taskGroups[groupName] = taskGroups[groupName] || 0;
-        taskGroups[groupName] += (perTaskPerUrlNode.selfTime || 0);
+        const groupTotal = taskGroups[groupName] || 0;
+        taskGroups[groupName] = groupTotal + (perTaskPerUrlNode.selfTime || 0);
       });
       Object.keys(taskGroups).forEach(groupName => {
         taskGroups[groupName] = Math.round(taskGroups[groupName] * 10) / 10;
@@ -159,7 +160,7 @@ class BootupTime extends Audit {
 
     // map data in correct format to create a table
     const results = Array.from(executionTimings).map(([url, groups]) => {
-      // Increase the totalBootupTime for all the taskGroups
+      // Add up the totalBootupTime for all the taskGroups
       totalBootupTime += Object.keys(groups).reduce((sum, name) => sum += groups[name], 0);
       extendedInfo[url] = groups;
 
