@@ -123,13 +123,18 @@ class BootupTime extends Audit {
         return;
       }
 
-      const tasks = {};
+      const taskGroups = {};
       perUrlNode.children.forEach((perTaskPerUrlNode) => {
-        const taskGroup = WebInspector.TimelineUIUtils.eventStyle(perTaskPerUrlNode.event);
-        tasks[taskGroup.title] = tasks[taskGroup.title] || 0;
-        tasks[taskGroup.title] += Number((perTaskPerUrlNode.selfTime || 0).toFixed(1));
+        const task = WebInspector.TimelineUIUtils.eventStyle(perTaskPerUrlNode.event);
+        // resolve which taskGroup we're using
+        const groupName = taskToGroup[task.title] || group.other;
+        taskGroups[groupName] = taskGroups[groupName] || 0;
+        taskGroups[groupName] += (perTaskPerUrlNode.selfTime || 0);
       });
-      result.set(url, tasks);
+      Object.keys(taskGroups).forEach(groupName => {
+        taskGroups[groupName] = Math.round(taskGroups[groupName] * 10) / 10;
+      });
+      result.set(url, taskGroups);
     });
 
     return result;
@@ -141,49 +146,30 @@ class BootupTime extends Audit {
    */
   static audit(artifacts) {
     const trace = artifacts.traces[BootupTime.DEFAULT_PASS];
-    const bootupTimings = BootupTime.getExecutionTimingsByURL(trace);
+    const executionTimings = BootupTime.getExecutionTimingsByURL(trace);
 
     let totalBootupTime = 0;
     const extendedInfo = {};
+
     const headings = [
       {key: 'url', itemType: 'url', text: 'URL'},
+      {key: 'scripting', itemType: 'text', text: group.scripting},
+      {key: 'scriptParseCompile', itemType: 'text', text: group.scriptParseCompile},
     ];
 
-    // Group tasks per url
-    const groupsPerUrl = Array.from(bootupTimings).map(([url, durations]) => {
-      extendedInfo[url] = durations;
-
-      const groups = [];
-      Object.keys(durations).forEach(task => {
-        totalBootupTime += durations[task];
-        const group = taskToGroup[task];
-
-        groups[group] = groups[group] || 0;
-        groups[group] += durations[task];
-
-        if (!headings.find(heading => heading.key === group)) {
-          headings.push(
-            {key: group, itemType: 'text', text: group}
-          );
-        }
-      });
+    // map data in correct format to create a table
+    const results = Array.from(executionTimings).map(([url, groups]) => {
+      // Increase the totalBootupTime for all the taskGroups
+      totalBootupTime += Object.keys(groups).reduce((sum, name) => sum += groups[name], 0);
+      extendedInfo[url] = groups;
 
       return {
         url: url,
-        groups,
+        // Only reveal the javascript task costs
+        // Later we can account for forced layout costs, etc.
+        scripting: Util.formatMilliseconds(groups[group.scripting] || 0, 1),
+        scriptParseCompile: Util.formatMilliseconds(groups[group.scriptParseCompile] || 0, 1),
       };
-    });
-
-    // map data in correct format to create a table
-    const results = groupsPerUrl.map(({url, groups}) => {
-      const res = {};
-      headings.forEach(heading => {
-        res[heading.key] = Util.formatMilliseconds(groups[heading.key] || 0, 1);
-      });
-
-      res.url = url;
-
-      return res;
     });
 
     const tableDetails = BootupTime.makeTableDetails(headings, results);
