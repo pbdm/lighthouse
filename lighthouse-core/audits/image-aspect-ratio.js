@@ -22,7 +22,6 @@ class ImageAspectRatio extends Audit {
    */
   static get meta() {
     return {
-      category: 'Images',
       name: 'image-aspect-ratio',
       description: 'Uses Images with appropriate aspect ratio',
       failureDescription: 'Does not use Images with appropriate aspect ratio',
@@ -95,7 +94,7 @@ class ImageAspectRatio extends Audit {
     ];
 
     return {
-      rawValue: results.length,
+      rawValue: results.length === 0,
       debugString,
       details: Audit.makeTableDetails(headings, results),
     };
