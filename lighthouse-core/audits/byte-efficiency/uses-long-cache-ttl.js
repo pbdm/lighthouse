@@ -31,7 +31,7 @@ class CacheHeaders extends ByteEfficiencyAudit {
   static get meta() {
     return {
       category: 'Caching',
-      name: 'cache-headers',
+      name: 'uses-long-cache-ttl',
       informative: true,
       helpText:
         'A well-defined cache policy can speed up repeat visits to your page. ' +

@@ -5,7 +5,7 @@
  */
 'use strict';
 
-const CacheHeadersAudit = require('../../../audits/byte-efficiency/cache-headers.js');
+const CacheHeadersAudit = require('../../../audits/byte-efficiency/uses-long-cache-ttl.js');
 const assert = require('assert');
 const WebInspector = require('../../../lib/web-inspector');
 
