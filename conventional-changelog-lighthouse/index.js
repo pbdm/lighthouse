@@ -1,6 +1,14 @@
+/**
+ * @license Copyright 2017 Google Inc. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ */
 'use strict';
 const readFileSync = require('fs').readFileSync;
 const resolve = require('path').resolve;
+const mainTemplate = readFileSync(resolve(__dirname, 'templates/template.hbs')).toString();
+const headerPartial = readFileSync(resolve(__dirname, 'templates/header.hbs')).toString();
+const commitPartial = readFileSync(resolve(__dirname, 'templates/commit.hbs')).toString();
 
 const parserOpts = {
   headerPattern: /^(\w*)(?:\((.*)\))?: (.*)$/,
@@ -12,6 +20,9 @@ const parserOpts = {
 };
 
 const writerOpts = {
+  mainTemplate,
+  headerPartial,
+  commitPartial,
   transform: commit => {
     if (typeof commit.hash === 'string') {
       commit.hash = commit.hash.substring(0, 7);
@@ -28,6 +39,21 @@ const writerOpts = {
       commit.type = 'Misc';
     }
 
+    let pullRequestMatch = commit.header.match(/\((#\d+)\)/);
+    // if header does not provide a PR we try the message
+    if (!pullRequestMatch && commit.message) {
+      pullRequestMatch = commit.message.match(/\(#(\d+)\)/);
+    }
+
+    if (pullRequestMatch) {
+      commit.header = commit.header.replace(pullRequestMatch[0], '');
+      if (commit.message) {
+        commit.message = commit.message.replace(pullRequestMatch[0], '');
+      }
+
+      commit.PR = pullRequestMatch[1];
+    }
+
     return commit;
   },
   groupBy: 'type',
@@ -41,13 +67,6 @@ const writerOpts = {
   },
   commitsSort: ['type', 'scope', 'message'],
 };
-
-const template = readFileSync(resolve(__dirname, 'templates/template.hbs')).toString();
-const header = readFileSync(resolve(__dirname, 'templates/header.hbs')).toString();
-const commit = readFileSync(resolve(__dirname, 'templates/commit.hbs')).toString();
-writerOpts.mainTemplate = template;
-writerOpts.headerPartial = header;
-writerOpts.commitPartial = commit;
 
 module.exports = {
   writerOpts,
