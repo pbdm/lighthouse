@@ -71,17 +71,15 @@ const loadTraceExpectations = {
 };
 
 describe('Performance: page execution timings audit', () => {
-  it('should compute the correct pageExecutionTiming values', (done) => {
-    // acceptable trace
-    let artifacts = {
+  it('should compute the correct pageExecutionTiming values for the pwa trace', () => {
+    const artifacts = {
       traces: {
         [PageExecutionTimings.DEFAULT_PASS]: acceptableTrace,
       },
     };
-    let output = null;
+    const output = PageExecutionTimings.audit(artifacts);
     const valueOf = name => Math.round(output.extendedInfo.value[name]);
 
-    output = PageExecutionTimings.audit(artifacts);
     assert.equal(output.details.items.length, 12);
     assert.equal(output.score, false);
     assert.equal(Math.round(output.rawValue), 611);
@@ -91,15 +89,16 @@ describe('Performance: page execution timings audit', () => {
         assert.equal(valueOf(category), acceptableTraceExpectations[category]);
       }
     }
-    // end acceptable trace
+  });
 
-    // siteWithRedirects trace
-    artifacts = {
+  it('should compute the correct pageExecutionTiming values for the redirect trace', () => {
+    const artifacts = {
       traces: {
         [PageExecutionTimings.DEFAULT_PASS]: siteWithRedirectTrace,
       },
     };
-    output = PageExecutionTimings.audit(artifacts);
+    const output = PageExecutionTimings.audit(artifacts);
+    const valueOf = name => Math.round(output.extendedInfo.value[name]);
     assert.equal(output.details.items.length, 13);
     assert.equal(output.score, false);
     assert.equal(Math.round(output.rawValue), 596);
@@ -109,15 +108,16 @@ describe('Performance: page execution timings audit', () => {
         assert.equal(valueOf(category), siteWithRedirectTraceExpectations[category]);
       }
     }
-    // end siteWithRedirects trace
+  });
 
-    // load trace
-    artifacts = {
+  it('should compute the correct pageExecutionTiming values for the load trace', () => {
+    const artifacts = {
       traces: {
         [PageExecutionTimings.DEFAULT_PASS]: loadTrace,
       },
     };
-    output = PageExecutionTimings.audit(artifacts);
+    const output = PageExecutionTimings.audit(artifacts);
+    const valueOf = name => Math.round(output.extendedInfo.value[name]);
     assert.equal(output.details.items.length, 12);
     assert.equal(output.score, false);
     assert.equal(Math.round(output.rawValue), 524);
@@ -127,9 +127,6 @@ describe('Performance: page execution timings audit', () => {
         assert.equal(valueOf(category), loadTraceExpectations[category]);
       }
     }
-    // end load trace
-
-    done();
   });
 
   it('should get no data when no events are present', () => {
