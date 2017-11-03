@@ -46,6 +46,7 @@
     "smokehouse": "node lighthouse-cli/test/smokehouse/smokehouse.js",
     "deploy-viewer": "cd lighthouse-viewer && gulp deploy",
     "bundlesize": "bundlesize",
+    "timing": "node lighthouse-core/scripts/generate-lh-timing-trace.js",
     "plots-smoke": "bash plots/test/smoke.sh"
   },
   "devDependencies": {
