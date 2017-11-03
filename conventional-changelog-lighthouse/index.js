@@ -39,7 +39,7 @@ const writerOpts = {
       commit.type = 'Misc';
     }
 
-    let pullRequestMatch = commit.header.match(/\((#\d+)\)/);
+    let pullRequestMatch = commit.header.match(/\(#(\d+)\)/);
     // if header does not provide a PR we try the message
     if (!pullRequestMatch && commit.message) {
       pullRequestMatch = commit.message.match(/\(#(\d+)\)/);
