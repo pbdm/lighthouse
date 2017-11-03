@@ -139,22 +139,28 @@ class PageExecutionTimings extends Audit {
     let totalExecutionTime = 0;
 
     const extendedInfo = {};
+    const categoryTotals = {};
     const results = Array.from(executionTimings).map(([eventName, duration]) => {
       totalExecutionTime += duration;
       extendedInfo[eventName] = duration;
+      const groupName = taskToGroup[eventName];
+
+      const categoryTotal = categoryTotals[groupName] || 0;
+      categoryTotals[groupName] = categoryTotal + duration;
 
       return {
         category: eventName,
-        group: taskToGroup[eventName],
+        group: groupName,
         duration: Util.formatMilliseconds(duration, 1),
       };
     });
 
     const headings = [
-      {key: 'category', itemType: 'text', text: 'Category'},
-      {key: 'group', itemType: 'text', text: 'Task Category'},
+      {key: 'group', itemType: 'text', text: 'Category'},
+      {key: 'category', itemType: 'text', text: 'Work'},
       {key: 'duration', itemType: 'text', text: 'Time spent'},
     ];
+    results.stableSort((a, b) => categoryTotals[b.group] - categoryTotals[a.group]);
     const tableDetails = PageExecutionTimings.makeTableDetails(headings, results);
 
     return {
