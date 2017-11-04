@@ -10,6 +10,7 @@ const mainTemplate = readFileSync(resolve(__dirname, 'templates/template.hbs')).
 const headerPartial = readFileSync(resolve(__dirname, 'templates/header.hbs')).toString();
 const commitPartial = readFileSync(resolve(__dirname, 'templates/commit.hbs')).toString();
 
+const pullRequestRegex = /\(#(\d+)\)$/;
 const parserOpts = {
   headerPattern: /^(\w*)(?:\((.*)\))?: (.*)$/,
   headerCorrespondence: [
@@ -39,10 +40,10 @@ const writerOpts = {
       commit.type = 'Misc';
     }
 
-    let pullRequestMatch = commit.header.match(/\(#(\d+)\)/);
+    let pullRequestMatch = commit.header.match(pullRequestRegex);
     // if header does not provide a PR we try the message
     if (!pullRequestMatch && commit.message) {
-      pullRequestMatch = commit.message.match(/\(#(\d+)\)/);
+      pullRequestMatch = commit.message.match(pullRequestRegex);
     }
 
     if (pullRequestMatch) {
@@ -59,6 +60,9 @@ const writerOpts = {
   groupBy: 'type',
   commitGroupsSort: (a, b) => {
     // put new audit on the top
+    if (a.title === 'New audit') {
+      return 1;
+    }
     if (b.title === 'New audit') {
       return 1;
     }
