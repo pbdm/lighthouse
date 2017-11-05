@@ -61,7 +61,7 @@ const writerOpts = {
   commitGroupsSort: (a, b) => {
     // put new audit on the top
     if (a.title === 'New audit') {
-      return 1;
+      return -1;
     }
     if (b.title === 'New audit') {
       return 1;
