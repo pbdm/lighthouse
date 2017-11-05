@@ -69,7 +69,7 @@ const writerOpts = {
 
     return a.title.localeCompare(b.title);
   },
-  commitsSort: ['type', 'scope', 'message'],
+  commitsSort: ['type', 'scope'],
 };
 
 module.exports = {
