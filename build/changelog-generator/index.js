@@ -47,9 +47,9 @@ const writerOpts = {
     }
 
     if (pullRequestMatch) {
-      commit.header = commit.header.replace(pullRequestMatch[0], '');
+      commit.header = commit.header.replace(pullRequestMatch[0], '').trim();
       if (commit.message) {
-        commit.message = commit.message.replace(pullRequestMatch[0], '');
+        commit.message = commit.message.replace(pullRequestMatch[0], '').trim();
       }
 
       commit.PR = pullRequestMatch[1];
@@ -65,6 +65,14 @@ const writerOpts = {
     }
     if (b.title === 'New audit') {
       return 1;
+    }
+
+    // put misc on the bottom
+    if (a.title === 'Misc') {
+      return 1;
+    }
+    if (b.title === 'Misc') {
+      return -1;
     }
 
     return a.title.localeCompare(b.title);

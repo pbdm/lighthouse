@@ -47,7 +47,7 @@
     "deploy-viewer": "cd lighthouse-viewer && gulp deploy",
     "bundlesize": "bundlesize",
     "plots-smoke": "bash plots/test/smoke.sh",
-    "changelog:generate": "conventional-changelog -n ./conventional-changelog-lighthouse/index.js -i changelog.md -s"
+    "changelog": "conventional-changelog -n ./build/changelog-generator/index.js -i changelog.md -s"
   },
   "devDependencies": {
     "@types/node": "^6.0.45",

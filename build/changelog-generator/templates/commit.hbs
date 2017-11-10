@@ -11,15 +11,13 @@
   {{~else~}}
     {{~header~}}
   {{~/if ~}}
-{{~!-- commit hash --}}
+{{~!-- PR number/commit hash --}}
 {{~#if @root.linkReferences~}}
-  {{~#if PR ~}}
-    ([#{{PR}}](
+  {{~#if PR}} ([#{{PR}}](
       {{~#if @root.host}}{{~@root.host}}/{{/if~}}
       {{~#if @root.owner ~}}{{@root.owner}}/{{/if~}}
       {{~@root.repository}}/pull/{{PR}}))
-  {{~else~}}
-    ([{{hash}}](
+  {{~else}} ([{{hash}}](
       {{~#if @root.host}}{{~@root.host}}/{{/if~}}
       {{~#if @root.owner ~}}{{@root.owner}}/{{/if~}}
       {{~@root.repository}}/{{@root.commit}}/{{hash}}))
