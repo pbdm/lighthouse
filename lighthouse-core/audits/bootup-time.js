@@ -132,9 +132,6 @@ class BootupTime extends Audit {
         const groupTotal = taskGroups[groupName] || 0;
         taskGroups[groupName] = groupTotal + (perTaskPerUrlNode.selfTime || 0);
       });
-      Object.keys(taskGroups).forEach(groupName => {
-        taskGroups[groupName] = Math.round(taskGroups[groupName] * 10) / 10;
-      });
       result.set(url, taskGroups);
     });
 
@@ -164,14 +161,17 @@ class BootupTime extends Audit {
       totalBootupTime += Object.keys(groups).reduce((sum, name) => sum += groups[name], 0);
       extendedInfo[url] = groups;
 
+      const scriptingTotal = groups[group.scripting] || 0;
+      const parseCompileTotal = groups[group.scriptParseCompile] || 0;
       return {
         url: url,
+        sum: scriptingTotal + parseCompileTotal,
         // Only reveal the javascript task costs
         // Later we can account for forced layout costs, etc.
-        scripting: Util.formatMilliseconds(groups[group.scripting] || 0, 1),
-        scriptParseCompile: Util.formatMilliseconds(groups[group.scriptParseCompile] || 0, 1),
+        scripting: Util.formatMilliseconds(scriptingTotal, 1),
+        scriptParseCompile: Util.formatMilliseconds(parseCompileTotal, 1),
       };
-    });
+    }).sort((a, b) => b.sum - a.sum);
 
     const tableDetails = BootupTime.makeTableDetails(headings, results);
 
