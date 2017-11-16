@@ -13,18 +13,13 @@ const WebInspector = require('../../lib/web-inspector');
 const URL = require('../../lib/url-shim');
 
 // Ignore assets that have very high likelihood of cache hit
-const IGNORE_THRESHOLD_IN_PERCENT = 0.95;
-// Basically we assume a 10% chance of repeat visit.
-const PROBABILITY_OF_RETURN_VISIT = 0.1;
+const IGNORE_THRESHOLD_IN_PERCENT = 0.925;
+
+// Scoring curve: https://www.desmos.com/calculator/zokzso8umm
+const SCORING_POINT_OF_DIMINISHING_RETURNS = 4; // 4 KB
+const SCORING_MEDIAN = 768; // 768 KB
 
 class CacheHeaders extends ByteEfficiencyAudit {
-  /**
-   * @return {number}
-   */
-  static get PROBABILITY_OF_RETURN_VISIT() {
-    return PROBABILITY_OF_RETURN_VISIT;
-  }
-
   /**
    * @return {!AuditMeta}
    */
@@ -32,11 +27,12 @@ class CacheHeaders extends ByteEfficiencyAudit {
     return {
       category: 'Caching',
       name: 'uses-long-cache-ttl',
-      informative: true,
+      description: 'Uses efficient cache policy on static assets',
+      failureDescription: 'Uses inefficient cache policy on static assets',
       helpText:
-        'A well-defined cache policy can speed up repeat visits to your page. ' +
-        '[Learn more](https://developers.google.com/speed/docs/insights/LeverageBrowserCaching).',
-      description: 'Leverage browser caching for static assets',
+        'A long cache lifetime can speed up repeat visits to your page. ' +
+        '[Learn more](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/http-caching#cache-control).',
+      scoringMode: ByteEfficiencyAudit.SCORING_MODES.NUMERIC,
       requiredArtifacts: ['devtoolsLogs'],
     };
   }
@@ -161,11 +157,12 @@ class CacheHeaders extends ByteEfficiencyAudit {
    * @param {!Artifacts} artifacts
    * @return {!AuditResult}
    */
-  static audit_(artifacts) {
+  static audit(artifacts) {
     const devtoolsLogs = artifacts.devtoolsLogs[ByteEfficiencyAudit.DEFAULT_PASS];
     return artifacts.requestNetworkRecords(devtoolsLogs).then(records => {
       const results = [];
       let queryStringCount = 0;
+      let totalWastedBytes = 0;
 
       for (const record of records) {
         if (!CacheHeaders.isCacheableAsset(record)) continue;
@@ -185,15 +182,16 @@ class CacheHeaders extends ByteEfficiencyAudit {
         if (cacheLifetimeInSeconds === 0) continue;
         cacheLifetimeInSeconds = cacheLifetimeInSeconds || 0;
 
-        let cacheHitProbability = CacheHeaders.getCacheHitProbability(cacheLifetimeInSeconds);
+        const cacheHitProbability = CacheHeaders.getCacheHitProbability(cacheLifetimeInSeconds);
         if (cacheHitProbability > IGNORE_THRESHOLD_IN_PERCENT) continue;
 
         const url = URL.elideDataURI(record._url);
         const totalBytes = record._transferSize;
-        const wastedBytes = (1 - cacheHitProbability) * totalBytes * PROBABILITY_OF_RETURN_VISIT;
+        const totalKb = ByteEfficiencyAudit.bytesToKbString(totalBytes);
+        const wastedBytes = (1 - cacheHitProbability) * totalBytes;
         const cacheLifetimeDisplay = formatDuration(cacheLifetimeInSeconds);
-        cacheHitProbability = `~${Math.round(cacheHitProbability * 100)}%`;
 
+        totalWastedBytes += wastedBytes;
         if (url.includes('?')) queryStringCount++;
 
         results.push({
@@ -202,22 +200,45 @@ class CacheHeaders extends ByteEfficiencyAudit {
           cacheLifetimeInSeconds,
           cacheLifetimeDisplay,
           cacheHitProbability,
+          totalKb,
           totalBytes,
           wastedBytes,
         });
       }
 
+      results.sort(
+        (a, b) => a.cacheLifetimeInSeconds - b.cacheLifetimeInSeconds || b.totalBytes - a.totalBytes
+      );
+
+      // Use the CDF of a log-normal distribution for scoring.
+      //   <= 4KB: score≈100
+      //   768KB: score=50
+      //   >= 4600KB: score≈5
+      const score = ByteEfficiencyAudit.computeLogNormalScore(
+        totalWastedBytes / 1024,
+        SCORING_POINT_OF_DIMINISHING_RETURNS,
+        SCORING_MEDIAN
+      );
+
       const headings = [
         {key: 'url', itemType: 'url', text: 'URL'},
-        {key: 'totalKb', itemType: 'text', text: 'Size (KB)'},
         {key: 'cacheLifetimeDisplay', itemType: 'text', text: 'Cache TTL'},
-        {key: 'probabilityOfCacheHit', itemType: 'text', text: 'Probability of Cache Hit (%)'},
+        {key: 'totalKb', itemType: 'text', text: 'Size (KB)'},
       ];
 
+      const tableDetails = ByteEfficiencyAudit.makeTableDetails(headings, results);
+
       return {
-        results,
-        headings,
-        extendedInfo: {queryStringCount},
+        score,
+        rawValue: totalWastedBytes,
+        displayValue: `${results.length} asset${results.length !== 1 ? 's' : ''} found`,
+        extendedInfo: {
+          value: {
+            results,
+            queryStringCount,
+          },
+        },
+        details: tableDetails,
       };
     });
   }
