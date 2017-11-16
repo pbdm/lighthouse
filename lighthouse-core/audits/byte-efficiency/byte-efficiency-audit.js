@@ -150,12 +150,11 @@ class UnusedBytes extends Audit {
       rawValue: wastedMs,
       score: UnusedBytes.scoreForWastedMs(wastedMs),
       extendedInfo: {
-        // Provide default extendedInfo values and merge in additional values provided
-        value: Object.assign({
+        value: {
           wastedMs,
           wastedKb,
           results,
-        }, result.extendedInfo),
+        },
       },
       details: tableDetails,
     };
