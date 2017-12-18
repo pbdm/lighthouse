@@ -36,10 +36,10 @@ class NoMutationEventsAudit extends Audit {
   static get meta() {
     return {
       name: 'no-mutation-events',
-      description: 'Avoids Mutation Events in its own scripts',
-      failureDescription: 'Uses Mutation Events in its own scripts',
-      helpText: 'Mutation Events are deprecated and harm performance. Consider using Mutation ' +
-          'Observers instead. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/mutation-events).',
+      description: '避免使用突变事件(Avoids Mutation Events in its own scripts)',
+      failureDescription: '在脚本中使用了突变事件(Mutation Events)',
+      helpText: 'Mutation Events 已经被遗弃并且会拖慢性能. 考虑使用 Mutation ' +
+          'Observers 代替. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/mutation-events).',
       requiredArtifacts: ['URL', 'EventListeners'],
     };
   }

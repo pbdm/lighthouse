@@ -335,7 +335,7 @@ class CategoryRenderer {
     const nonPassedAudits = nonManualAudits.filter(audit => !passedAudits.includes(audit));
 
     const nonPassedElem = this._renderAuditGroup({
-      title: `${nonPassedAudits.length} Failed Audits`,
+      title: `${nonPassedAudits.length}个未通过的审查`,
     }, {expandable: false});
     nonPassedElem.classList.add('lh-failed-audits');
     nonPassedAudits.forEach(audit => nonPassedElem.appendChild(this._renderAudit(audit)));

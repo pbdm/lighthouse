@@ -20,11 +20,10 @@ class NotificationOnStart extends ViolationAudit {
   static get meta() {
     return {
       name: 'notification-on-start',
-      description: 'Avoids requesting the notification permission on page load',
-      failureDescription: 'Requests the notification permission on page load',
-      helpText: 'Users are mistrustful of or confused by sites that request to send ' +
-          'notifications without context. Consider tying the request to user gestures ' +
-          'instead. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/notifications-on-load).',
+      description: '避免在页面加载时请求通知消息权限',
+      failureDescription: '在页面加载时请求了通知消息权限',
+      helpText: '用户会对随意的请求通知消息权限感到不信任和困惑, 考虑将该动作放在用户有交互手势时' +
+          ' [Learn more](https://developers.google.com/web/tools/lighthouse/audits/notifications-on-load).',
       requiredArtifacts: ['ChromeConsoleMessages'],
     };
   }
