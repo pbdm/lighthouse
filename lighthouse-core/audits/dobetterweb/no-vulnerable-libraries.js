@@ -26,12 +26,9 @@ class NoVulnerableLibrariesAudit extends Audit {
   static get meta() {
     return {
       name: 'no-vulnerable-libraries',
-      description: 'Avoids front-end JavaScript libraries'
-        + ' with known security vulnerabilities',
-      failureDescription: 'Includes front-end JavaScript libraries'
-        + ' with known security vulnerabilities',
-      helpText: 'Some third-party scripts may contain known security vulnerabilities ' +
-        ' that are easily identified and exploited by attackers.',
+      description: '避免引用有安全问题的 JS',
+      failureDescription: '引用了有安全问题的 JS',
+      helpText: '一些第三方的脚本会包含一些已知的安全问题, 容易被黑客识别和攻击',
       requiredArtifacts: ['JSLibraries'],
     };
   }

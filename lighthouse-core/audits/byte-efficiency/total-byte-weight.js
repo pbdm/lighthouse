@@ -82,7 +82,7 @@ class TotalByteWeight extends ByteEfficiencyAudit {
       return {
         score,
         rawValue: totalBytes,
-        displayValue: `Total size was ${ByteEfficiencyAudit.bytesToKbString(totalBytes)}`,
+        displayValue: `总大小为 ${ByteEfficiencyAudit.bytesToKbString(totalBytes)}`,
         extendedInfo: {
           value: {
             results,

@@ -23,9 +23,9 @@ class ImageAspectRatio extends Audit {
   static get meta() {
     return {
       name: 'image-aspect-ratio',
-      description: 'Displays images with correct aspect ratio',
-      failureDescription: 'Displays images with incorrect aspect ratio',
-      helpText: 'Image display dimensions should match natural aspect ratio.',
+      description: '将图片显示成正确的长宽比',
+      failureDescription: '图片未显示成正确的长宽比',
+      helpText: '图片的显示长宽比应遵循它原有的相同 Ratio',
       requiredArtifacts: ['ImageUsage'],
     };
   }

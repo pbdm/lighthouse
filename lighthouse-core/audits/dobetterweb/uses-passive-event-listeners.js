@@ -20,11 +20,11 @@ class PassiveEventsAudit extends ViolationAudit {
   static get meta() {
     return {
       name: 'uses-passive-event-listeners',
-      description: 'Uses passive listeners to improve scrolling performance',
-      failureDescription: 'Does not use passive listeners to improve scrolling performance',
-      helpText: 'Consider marking your touch and wheel event listeners as `passive` ' +
-          'to improve your page\'s scroll performance. ' +
-          '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/passive-event-listeners).',
+      description: '使用 passive listeners 提高滚动性能' +
+        '(Uses passive listeners to improve scrolling performance)',
+      failureDescription: '未使用 passive listeners 来提高滚动性能',
+      helpText: '考虑将 touch 和 wheel 监听事件设置成 `passive` 从而提高页面的滚动性能. ' +
+          '[查看更多](https://developers.google.com/web/tools/lighthouse/audits/passive-event-listeners).',
       requiredArtifacts: ['ChromeConsoleMessages'],
     };
   }
