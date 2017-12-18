@@ -231,7 +231,7 @@ class CategoryRenderer {
    */
   _renderPassedAuditsSection(elements) {
     const passedElem = this._renderAuditGroup({
-      title: `${elements.length} Passed Audits`,
+      title: `${elements.length}个通过的审查`,
     }, {expandable: true});
     passedElem.classList.add('lh-passed-audits');
     elements.forEach(elem => passedElem.appendChild(elem));

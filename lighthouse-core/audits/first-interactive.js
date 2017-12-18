@@ -20,10 +20,9 @@ class FirstInteractiveMetric extends Audit {
   static get meta() {
     return {
       name: 'first-interactive',
-      description: 'First Interactive (beta)',
-      helpText: 'First Interactive marks the time at which the page is ' +
-          'minimally interactive. ' +
-          '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/first-interactive).',
+      description: '首次可交互(First Interactive)',
+      helpText: '用户最小的可交互时间' +
+          '[查看更多](https://developers.google.com/web/tools/lighthouse/audits/first-interactive).',
       scoringMode: Audit.SCORING_MODES.NUMERIC,
       requiredArtifacts: ['traces'],
     };

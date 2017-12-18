@@ -21,12 +21,8 @@ class EstimatedInputLatency extends Audit {
   static get meta() {
     return {
       name: 'estimated-input-latency',
-      description: 'Estimated Input Latency',
-      helpText: 'The score above is an estimate of how long your app takes to respond to user ' +
-          'input, in milliseconds. There is a 90% probability that a user encounters this amount ' +
-          'of latency, or less. 10% of the time a user can expect additional latency. If your ' +
-          'score is higher than Lighthouse\'s target score, users may perceive your app as ' +
-          'laggy. [Learn more](https://developers.google.com/web/tools/lighthouse/audits/estimated-input-latency).',
+      description: '预计输入延迟时间(Estimated Input Latency)',
+      helpText: '上面的分数是页面对用户输入的响应时间(以毫秒为单位)的预估, 如果该项得分很低，用户很可能感知到页面的卡顿 [查看更多](https://developers.google.com/web/tools/lighthouse/audits/estimated-input-latency).',
       scoringMode: Audit.SCORING_MODES.NUMERIC,
       requiredArtifacts: ['traces'],
     };

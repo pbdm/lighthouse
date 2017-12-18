@@ -15,13 +15,10 @@ class CriticalRequestChains extends Audit {
   static get meta() {
     return {
       name: 'critical-request-chains',
-      description: 'Critical Request Chains',
+      description: '关键路径(Critical Request Chains)',
       informative: true,
-      helpText: 'The Critical Request Chains below show you what resources are ' +
-          'issued with a high priority. Consider reducing ' +
-          'the length of chains, reducing the download size of resources, or ' +
-          'deferring the download of unnecessary resources to improve page load. ' +
-          '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/critical-request-chains).',
+      helpText: '下面的关键请求路径展示了那些资源是高优先级的. 考虑减小路径的长度, 减少下载资源的大小或者异步加载一些不重要的资源来优化页面加载' +
+          '[查看更多](https://developers.google.com/web/tools/lighthouse/audits/critical-request-chains).',
       requiredArtifacts: ['devtoolsLogs'],
     };
   }
@@ -122,7 +119,7 @@ class CriticalRequestChains extends Audit {
         },
         details: {
           type: 'criticalrequestchain',
-          header: {type: 'text', text: 'View critical network waterfall:'},
+          header: {type: 'text', text: '查看关键网络请求瀑布流:'},
           chains,
           longestChain,
         },

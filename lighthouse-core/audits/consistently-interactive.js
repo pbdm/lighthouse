@@ -31,10 +31,9 @@ class ConsistentlyInteractiveMetric extends Audit {
   static get meta() {
     return {
       name: 'consistently-interactive',
-      description: 'Consistently Interactive (beta)',
-      helpText: 'Consistently Interactive marks the time at which the page is ' +
-          'fully interactive. ' +
-          '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/consistently-interactive).',
+      description: '完全可交互(Consistently Interactive)',
+      helpText: '用户完全可交互时间' +
+          '[查看更多](https://developers.google.com/web/tools/lighthouse/audits/consistently-interactive).',
       scoringMode: Audit.SCORING_MODES.NUMERIC,
       requiredArtifacts: ['traces', 'devtoolsLogs'],
     };

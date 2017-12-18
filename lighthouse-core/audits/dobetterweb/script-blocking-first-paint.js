@@ -20,11 +20,10 @@ class ScriptBlockingFirstPaint extends Audit {
   static get meta() {
     return {
       name: 'script-blocking-first-paint',
-      description: 'Reduce render-blocking scripts',
+      description: '减少阻塞渲染的脚本(Reduce render-blocking scripts)',
       informative: true,
-      helpText: 'Script elements are blocking the first paint of your page. Consider inlining ' +
-          'critical scripts and deferring non-critical ones. ' +
-          '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/blocking-resources).',
+      helpText: '脚本文件正阻塞页面的首次渲染, 考虑将关键的脚本放在内联标签里, 不关键的使用异步加载 ' +
+          '[查看更多](https://developers.google.com/web/tools/lighthouse/audits/blocking-resources).',
       requiredArtifacts: ['TagsBlockingFirstPaint', 'traces'],
     };
   }

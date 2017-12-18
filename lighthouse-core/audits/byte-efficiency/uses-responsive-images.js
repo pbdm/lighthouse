@@ -27,12 +27,11 @@ class UsesResponsiveImages extends ByteEfficiencyAudit {
   static get meta() {
     return {
       name: 'uses-responsive-images',
-      description: 'Properly size images',
+      description: '适当的图片大小(Properly size images)',
       informative: true,
       helpText:
-        'Serve images that are appropriately-sized to save cellular data ' +
-        'and improve load time. ' +
-        '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/oversized-images).',
+        '远程图片应该有适合的大小, 这样可以节约带宽从而改善加载速度 ' +
+        '[查看更多](https://developers.google.com/web/tools/lighthouse/audits/oversized-images).',
       requiredArtifacts: ['ImageUsage', 'ViewportDimensions', 'devtoolsLogs'],
     };
   }

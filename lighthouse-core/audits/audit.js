@@ -114,7 +114,7 @@ class Audit {
     const tableRows = Audit.makeTableRows(headings, results);
     return {
       type: 'table',
-      header: 'View Details',
+      header: '查看详情',
       itemHeaders: tableHeaders,
       items: tableRows,
     };

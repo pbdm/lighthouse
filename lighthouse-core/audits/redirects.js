@@ -16,9 +16,9 @@ class Redirects extends Audit {
   static get meta() {
     return {
       name: 'redirects',
-      description: 'Avoids page redirects',
-      failureDescription: 'Has multiple page redirects',
-      helpText: 'Redirects introduce additional delays before the page can be loaded. [Learn more](https://developers.google.com/speed/docs/insights/AvoidRedirects).',
+      description: '避免页面重定向(Avoids page redirects)',
+      failureDescription: '有多个页面重定向存在',
+      helpText: '重定向意味着在页面加载前会有更多的延迟. [Learn more](https://developers.google.com/speed/docs/insights/AvoidRedirects).',
       requiredArtifacts: ['URL', 'devtoolsLogs'],
     };
   }

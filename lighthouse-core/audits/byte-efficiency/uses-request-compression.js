@@ -23,10 +23,9 @@ class ResponsesAreCompressed extends ByteEfficiencyAudit {
     return {
       name: 'uses-request-compression',
       informative: true,
-      description: 'Enable text compression',
-      helpText: 'Text-based responses should be served with compression (gzip, deflate or brotli)' +
-        ' to minimize total network bytes.' +
-        ' [Learn more](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/optimize-encoding-and-transfer).',
+      description: '使用文本压缩(Enable text compression)',
+      helpText: '文本内容应该应该采用 gzip, deflate 或 brotli 之类的压缩格式来减小传输体积' +
+        ' [查看更多](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/optimize-encoding-and-transfer).',
       requiredArtifacts: ['ResponseCompression', 'devtoolsLogs'],
     };
   }

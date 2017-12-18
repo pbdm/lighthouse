@@ -26,11 +26,10 @@ class OffscreenImages extends ByteEfficiencyAudit {
   static get meta() {
     return {
       name: 'offscreen-images',
-      description: 'Offscreen images',
+      description: '首屏外图片(Offscreen images)',
       informative: true,
-      helpText: 'Consider lazy-loading offscreen images to improve page load speed ' +
-        'and time to interactive. ' +
-        '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/offscreen-images).',
+      helpText: '考虑将首屏外的图片做延迟加载从而改善加载速度和首次交互时间 ' +
+        '[查看更多](https://developers.google.com/web/tools/lighthouse/audits/offscreen-images).',
       requiredArtifacts: ['ImageUsage', 'ViewportDimensions', 'traces', 'devtoolsLogs'],
     };
   }

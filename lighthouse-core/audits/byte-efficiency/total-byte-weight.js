@@ -19,12 +19,12 @@ class TotalByteWeight extends ByteEfficiencyAudit {
   static get meta() {
     return {
       name: 'total-byte-weight',
-      description: 'Avoids enormous network payloads',
-      failureDescription: 'Has enormous network payloads',
+      description: '避免巨大的网络负载(Avoids enormous network payloads)',
+      failureDescription: '存在巨大的网络负载',
       helpText:
-          'Network transfer size [costs users real money](https://whatdoesmysitecost.com/) ' +
-          'and is [highly correlated](http://httparchive.org/interesting.php#onLoad) with long load times. ' +
-          'Try to find ways to reduce the size of required files.',
+          '网络传输大小 [耗费用户的实际内存](https://whatdoesmysitecost.com/) ' +
+          '而且会[导致](http://httparchive.org/interesting.php#onLoad)过长的加载时间. ' +
+          '尝试找到减少文件大小的方法.',
       scoringMode: ByteEfficiencyAudit.SCORING_MODES.NUMERIC,
       requiredArtifacts: ['devtoolsLogs'],
     };

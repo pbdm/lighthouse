@@ -21,11 +21,10 @@ class UsesWebPImages extends ByteEfficiencyAudit {
   static get meta() {
     return {
       name: 'uses-webp-images',
-      description: 'Serve images in next-gen formats',
+      description: '使用下一代图片格式(Serve images in next-gen formats)',
       informative: true,
-      helpText: 'Image formats like JPEG 2000, JPEG XR, and WebP often provide better ' +
-        'compression than PNG or JPEG, which means faster downloads and less data consumption. ' +
-        '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/webp).',
+      helpText: 'JPEG 2000, JPEG XR, WebP 这样的图片格式总是比 PNG 或者 JPG 提供了更好的压缩率' +
+        '[查看更多](https://developers.google.com/web/tools/lighthouse/audits/webp).',
       requiredArtifacts: ['OptimizedImages', 'devtoolsLogs'],
     };
   }

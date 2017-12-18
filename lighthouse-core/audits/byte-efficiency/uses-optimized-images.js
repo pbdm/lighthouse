@@ -21,10 +21,10 @@ class UsesOptimizedImages extends ByteEfficiencyAudit {
   static get meta() {
     return {
       name: 'uses-optimized-images',
-      description: 'Optimize images',
+      description: '优化图片(Optimize images)',
       informative: true,
-      helpText: 'Optimized images load faster and consume less cellular data. ' +
-        '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/optimize-images).',
+      helpText: '优化后的图片可以比优化前的图片加载更快, 消耗跟小的带宽. ' +
+        '[查看更多](https://developers.google.com/web/tools/lighthouse/audits/optimize-images).',
       requiredArtifacts: ['OptimizedImages', 'devtoolsLogs'],
     };
   }

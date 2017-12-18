@@ -34,14 +34,14 @@ class DOMSize extends Audit {
   static get meta() {
     return {
       name: 'dom-size',
-      description: 'Avoids an excessive DOM size',
-      failureDescription: 'Uses an excessive DOM size',
-      helpText: 'Browser engineers recommend pages contain fewer than ' +
-        `~${Util.formatNumber(DOMSize.MAX_DOM_NODES)} DOM nodes. The sweet spot is a tree ` +
-        `depth < ${MAX_DOM_TREE_DEPTH} elements and fewer than ${MAX_DOM_TREE_WIDTH} ` +
-        'children/parent element. A large DOM can increase memory usage, cause longer ' +
-        '[style calculations](https://developers.google.com/web/fundamentals/performance/rendering/reduce-the-scope-and-complexity-of-style-calculations), ' +
-        'and produce costly [layout reflows](https://developers.google.com/speed/articles/reflow). [Learn more](https://developers.google.com/web/fundamentals/performance/rendering/).',
+      description: '避免过多的 DOM 大小 (Avoids an excessive DOM size)',
+      failureDescription: '使用了过多的 DOM 大小',
+      helpText: '浏览器引擎建议一个页面包含少于 ' +
+        `~${Util.formatNumber(DOMSize.MAX_DOM_NODES)} DOM节点. 最好是树深度` +
+        `小于${MAX_DOM_TREE_DEPTH}个节点, 元素的父子节点小于 ${MAX_DOM_TREE_WIDTH} ` +
+        '. 一个大的 DOM 会增多内存的消耗, 从而导致更长的的' +
+        '[样式计算时间](https://developers.google.com/web/fundamentals/performance/rendering/reduce-the-scope-and-complexity-of-style-calculations), ' +
+        '和[排版, 绘制时间](https://developers.google.com/speed/articles/reflow). [查看更多](https://developers.google.com/web/fundamentals/performance/rendering/).',
       scoringMode: Audit.SCORING_MODES.NUMERIC,
       requiredArtifacts: ['DOMStats'],
     };

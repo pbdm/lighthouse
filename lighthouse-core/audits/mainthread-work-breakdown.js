@@ -23,10 +23,9 @@ class PageExecutionTimings extends Audit {
     return {
       category: 'Performance',
       name: 'mainthread-work-breakdown',
-      description: 'Main thread work breakdown',
+      description: '主线程中断(Main thread work breakdown)',
       informative: true,
-      helpText: 'Consider reducing the time spent parsing, compiling and executing JS.' +
-        'You may find delivering smaller JS payloads helps with this.',
+      helpText: '考虑减少花在解析, 编译和运行 JS 上的时间, 你会发现减少 JS 的负载可以解决这个问题.',
       requiredArtifacts: ['traces'],
     };
   }
