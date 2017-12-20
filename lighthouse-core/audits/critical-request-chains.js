@@ -17,7 +17,8 @@ class CriticalRequestChains extends Audit {
       name: 'critical-request-chains',
       description: '关键路径(Critical Request Chains)',
       informative: true,
-      helpText: '下面的关键请求路径展示了那些资源是高优先级的. 考虑减小路径的长度, 减少下载资源的大小或者异步加载一些不重要的资源来优化页面加载' +
+      // helpText: '下面的关键请求路径展示了那些资源是高优先级的. 考虑减小路径的长度, 减少下载资源的大小或者异步加载一些不重要的资源来优化页面加载' +
+      helpText: '考虑减小关键路径的长度, 减小下载资源的大小或者异步加载一些不重要的资源来优化页面加载' +
           '[查看更多](https://developers.google.com/web/tools/lighthouse/audits/critical-request-chains).',
       requiredArtifacts: ['devtoolsLogs'],
     };
